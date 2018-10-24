@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+	<div id="map" style="width: 500px; height: 400px;"></div>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2fec23242f1f2452f8cd42860083253e&libraries=services"></script>
+	<script>
+	
+		var container = document.getElementById('map');
+		var options = {
+			center : new daum.maps.LatLng(33.450701, 126.570667),
+			level : 3
+		};
+	
+		var map = new daum.maps.Map(container, options);
+	
+		
+		var home = '';
+		var geocoder = new daum.maps.services.Geocoder();
+	
+		var callback = function(result, status) {
+			if (status === daum.maps.services.Status.OK) {
+				console.log(result);
+				home = result;
+			}
+		};
+	
+		geocoder.addressSearch('서울시 강동구 상암로 11', callback);
+		
+	
+	
+		function toHome() {
+			var x= Number(home[0].x);
+			var y = Number(home[0].y);
+	
+			options = {
+				center : new daum.maps.LatLng(y,x),
+				level : 4
+			};
+			alert(home[0].x);
+			map = new daum.maps.Map(container, options);
+		
+		}
+	</script>
+
+	<input type="button" id="homeAddr" value="집으로" onclick=toHome()>
+
+</body>
+</html>

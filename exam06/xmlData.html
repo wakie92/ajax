@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "httprequest.js"></script>
+<script>
+	function sendOnClick(){
+		sendProcess('GET','sample.xml',null,callback);
+	}
+	
+	function callback(){
+		if(httpRequest.readyState  ==4 && httpRequest.status ==200){
+			var msg = '';
+			var xmlDoc = httpRequest.responseXML//console창 참고
+			var memberList  = xmlDoc.getElementsByTagName("member");
+			
+		/* 	for(var i = 0 ; i<memberList.length; i++){
+				var member = memberList[i];
+				//var id= member.getElementsByTagName("id");//console.log(id) 찍어보기
+				//console.log(id);
+				var id= member.getElementsByTagName("id")[0].firstchlid.nodeVal // 이것도 가능
+				//id = id[0].innerHTML;//이게 왜 0으로 되는지 고민하기
+				var name= member.getElementsByTagName("name")[0].firstchlid.nodeVal;
+				//name = name[0].innerHTML;
+				msg+= id+ '(' + name + ')\n';
+			} 
+			 */
+			for(var i = 0 ; i<memberList.length; i++){
+				var member = memberList[i];
+				var id= member.getElementsByTagName("id")[0].firstchlid.nodeVal // 이것도 가능
+				var name= member.getElementsByTagName("name")[0].firstchlid.nodeVal;
+				msg+= id+ '(' + name + ')\n';
+			}
+			msg += '회원수 : ' + memberList.length + '명\n';
+			var debug = document.getElementById("debug");
+			debug.value = msg;
+			
+		}
+	}
+	
+	
+</script>
+</head>
+<body>
+	<h2>XML DATA 예제</h2>
+	<br>
+	<textarea rows ='10' cols ='80' id='debug'></textarea>
+	<input type="button" value = "서버에 자료요청" onclick = "sendOnClick()">
+</body>
+</html>

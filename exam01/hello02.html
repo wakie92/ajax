@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#msgView{
+	width : 500px;
+	height : 200px;
+	border : 1px solid red;
+}
+</style>
+<script>
+	var httpRequest = null
+	
+	function getXMLHttpRequest(){
+		if(window.XMLHttpRequest){
+			return new XMLHttpRequest();
+		}else if(window.ActiveObject){
+			return new XMLActiveObject("Microsoft.XMLHTTP");
+		}		
+		return null;
+	}
+	
+	//callback함수 정의후, 서버에서 요청
+	function sendRequest(method, url, callback){
+		httpRequest.onreadystatechange = callback;
+		httpRequest.open(method,url,true);
+		httpRequest.send(null);
+		
+	}
+	
+	function requestMsg(){
+		//XMLHttpRequest객체 생성
+		sendRequest("GET","hello.html",responseMsg);
+		httpRequest = getXMLHttpRequest();
+	}
+	
+	//서버의 요청처리를 관찰, 응답완료시 결과를 화면에 업데이트
+	function responseMsg(){
+		if(httpRequest.readyState == 4){
+			if(httpRequest.status ==200){
+				var msgView = document.getElementById("msgView");
+				msgView.innerHTML = httpRequest.responseText;
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<h2>서버에서 받은 메세지</h2>
+	<div id= "msgView"></div>
+	<input type ="button" value = "서버에 자료요청" onclick ="requestMsg()">
+</body>
+</html>

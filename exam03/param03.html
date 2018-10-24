@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src = 'http://code.jquery.com/jquery-3.3.1.min.js'></script>
+<script>
+	$(document).ready(function(){
+		$(':button').click(function(){
+			
+			var name = $("#name").val(); 
+			var age = $("#age").val();
+		/*	
+		 	$.ajax({
+				url : "/param3.jsp",
+				type :"post",
+				//data : "name=hong&age=25",
+				//data : {name : 'hong', age : 26},
+				data : {name : name, age : age},
+				success : function(data){
+					$('#debug').val(data);
+				},
+				error : function(request){
+					alert ('code : ' + request.status + '\n 오류내용 : ' +request.responseText);
+				}
+				 
+			})	
+			*/
+		 	$.post({
+				url :"param3.jsp",
+				data : {name,age},
+				success : function(a){
+					$('#debug').val(a);
+				}
+			}) 
+/* 			$.post("param3.jsp",{name : '홍기롱', age : 12},function(data){
+					$('#debug').val(data);
+			})
+ */			
+       /*      
+            $.post("param3.jsp",function(data){//파라미터 없어도 가능
+					$('#debug').val(data);
+			}) */
+		});
+	});
+</script>
+</head>
+<body>
+<textarea rows ="10"  cols = "80" id = "debug"></textarea><br>
+	이름<input type='text' id = "name"><br>
+	나이<input type='text' id = "age"><br>
+	
+	<button> 호출</button>
+
+</body>
+</html>

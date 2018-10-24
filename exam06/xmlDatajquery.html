@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src= "httprequest.js"></script>
+<script src = "/jquery/lib/jquery-3.3.1.js"></script>
+<script>
+	function sendOnClick(){
+		sendProcess("POST",'sample.xml', null,callback);
+	}
+	
+	var memeberList = '';
+	function callback(){
+		if(httpRequest.readyState == 4 && httpRequest.status == 200){
+			var msg = '';
+			//var xmlDoc = $.parseXML(httpRequest.responseText);//text를 xml로 parsing해주는 것
+			var xmlDoc = httpRequest.responseXML;
+			memberList = $(xmlDoc).find('member');
+			msg += '회원수' + memberList.length + '\n';
+			
+			
+			memberList.each(function(index){
+				var id = $(this).find('id').text();//속도는 조금 느리다.find에 document.getElementBy~가 들어가있다.
+				var name = $(this).find('name').text();
+				console.log(id);
+				msg += id +'(' + name + ')\n';
+			});
+			var debug = document.getElementById('debug');
+			debug.value = msg;
+		}
+	}
+
+</script>
+</head>
+<body>
+	<h2>XML DATA 예제</h2>
+	<br>
+	<textarea rows ='10' cols ='80' id='debug'></textarea>
+	<input type="button" value = "서버에 자료요청" onclick = "sendOnClick()">
+</body>
+</html>

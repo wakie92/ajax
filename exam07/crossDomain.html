@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "/jquery/lib/jquery-3.3.1.js"></script>
+<script>
+//크로스도메인이란 내서버에있는 내파일을 가져오는 것이아니라 openAPI처럼 다른서버에있는 url을 가져오는 경우를 말한다. 
+	$(document).ready(function(){
+
+		$('#search').click(function(){
+			var date = $('#searchDate').val();
+			date = date.replace(/-/gi,"");//정규식 
+		
+			$.ajax({
+				url : "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json",
+				type : "get",
+				data : {
+					key : '66c207266e945232968891ea6ff2d56c',
+					targetDt : date,
+					itemPerPage : '3'
+				},
+				datatype : 'jsonp',//json파일로 눈속임을 하기 위한것이다 보통 크로스도메인 규정에 따라 보안을 위해 에러가나는 것이 당연하다. openAPI를 사용시에
+				success : callback,
+				error : function(){
+					alert('error');
+				}
+				
+			})
+		})
+
+		$(document).on()
+		
+		
+		/* 	
+			$("this.button").click(function(){
+				alert(i);
+				$.ajax({
+					url : "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json",
+					type :"get",
+					data : {
+						key :'66c207266e945232968891ea6ff2d56c',
+						movieCd : info.movieCd,
+						
+					},
+					datatype :'jsonp',
+					success : callback2,
+					error :function(){
+						alert(error);
+					}
+				})
+			}) */
+		
+	})
+	
+	
+	
+	function callback(data){
+		var list = data.boxOfficeResult.dailyBoxOfficeList;
+		for(var i =0; i<list.length; i++){
+			var info = list[i];
+			var rank = info.rank;
+			var name = info.movieNm;
+			var audiAcc = info.audiAcc;
+			var movieCd = info.movieCd ;
+			
+			$('#SearchResult').append('<hr>');
+			
+			$('#SearchResult').append('<h4>' + rank + '위</h4>' );
+			$('#SearchResult').append('<b>'+ name + '</b>('+audiAcc+'명)' + "<button id ='btn'>상세보기</button>");
+			$('#SearchResult').append('<hr>');
+		
+			
+		
+		function callback2(data){
+			var movie = data.movieInfoResult.movieInfo;
+			alert(movie.movieCd);
+			var movieNm = movie.movieNm;
+			var openDt = movie.openDt;
+			var genres = movie.genreNm;
+			var director = movie.directors.peopleNm;
+			var actors = movie.actors.peopleNm;
+			$('#SearchResult').append('<p> 제목  : ' + movieNm  + '('+movie.openDt + '개봉) 감독  : ' + director +'<br>' );
+			$('#SearchResult').append('장르: ' + genres[0]  + '<br>' );
+			$('#SearchResult').append('출연배우  <br>');
+			for(var i = 0 ; i <actors.length; i++){
+				$('#SearchResult').append( actors[i].peopleNm + '('+ actor[i].cast +')'+'<br>');
+			}
+		
+		}
+		}
+		console.log(list);
+}
+</script>
+<style>
+	#SearchResult {
+		border : 1px solid red;
+		width : 70%;
+		height : 600px;
+	}
+</style>
+<script>
+	
+
+</script>
+</head>
+<body>
+	<h2>일일 박스오피스 조회서비스</h2>
+	검색일  : <input type = "date" id = "searchDate"><br>
+	<button id = "search">검색</button>
+	<br>
+	<h4>검색결과</h4>
+	<div id = "SearchResult"> 
+	
+	</div>
+	
+</body>
+</html>

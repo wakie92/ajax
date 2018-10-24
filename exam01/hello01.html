@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#msgView{
+	width : 500px;
+	height : 200px;
+	border : 1px solid red;
+}
+</style>
+<script>
+	var httpRequest = null;
+	function requestMsg(){
+		//1. XMLHttpRequest 객체 생성
+		if(window.XMLHttpRequest){
+			httpRequest = new XMLHttpRequest();		
+		}else if(window.ActiveXObject){
+			httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		//2. callback 함수 설정
+		httpRequest.onreadystatechange = responseMsg;
+		
+		//3.서버에 비동기요청   메소드방식으로는 get과 post가 있음
+		//httpRequest.open(메소드방식, url, 비동기/동기)
+		httpRequest.open("GET", "hello.html", true);
+		httpRequest.send(null);
+		
+	}
+	//서버가 잘하고있나 감시하는 함수
+	//4.서버에서 응답완료
+	function  responseMsg(){
+		if(httpRequest.readyState == 4){// 4는 서버에 전송 완료
+			if(httpRequest.status==200 ){//200은 서버가 정상적으로 완료
+				//5. 응답결과를 화면에 출력
+				var msgView = document.getElementById("msgView");
+				msgView.innerHTML += httpRequest.responseText;
+			
+				//msgView.append(httpRequest.responseText);
+			}
+		}
+		
+	}
+</script>
+</head>
+<body>
+	<h2>서버에서 받은 메세지</h2>
+	<div id= "msgView"></div>
+	<input type ="button" value = "서버에 자료요청" onclick ="requestMsg()">
+	
+</body>
+</html>

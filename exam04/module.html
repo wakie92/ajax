@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "httprequest.js"></script>
+<script src = "/jquery/lib/jquery-3.3.1.js"></script>
+<script>
+	function sendOnClick(){
+		//var params = {'name' : 'hong', 'age' : 20, 'addr' : 'seoul'};
+		
+		var name = document.inputFrom.name
+		var age = document.inputFrom.age
+		var addr = document.inputFrom.addr
+		var params = {'name' : name.value, 'age' : age.value, 'addr' : addr.value}
+		
+		//	sendProcess("GET", "sample.jsp", "name=hong&age=20", callback);		
+		//	sendProcess("POST", "sample.jsp", '', callback);		
+		//	sendProcess("POST", "sample.jsp", "name=hong&age=20", callback);		
+		//	sendProcess("Post", "sample.jsp", "name=hong&age=20", callback);		
+		//	sendProcess(null, "sample.jsp", "name=hong&age=20", callback);	
+		//  sendProcess("GET", "sample.jsp", params, callback);		
+		  sendProcess("GET", "sample.jsp",params,callback);		
+	}
+	
+	//jquery로 변환 연습하기 2018.06.04
+	$(document).ready(function(){
+		
+	})
+	//2 콜백함수 설정
+	function callback() {
+		if(httpRequest.readyState == 4) {
+			if(httpRequest.status == 200) {
+				var msg = '====================================\n';
+				msg += '[실행결과]\n';
+				msg += httpRequest.responseText + '\n';
+				msg += '====================================\n';
+				
+				var debug = document.getElementById("debug");
+				debug.value = msg;
+			}
+		}
+	}
+
+
+</script>
+</head>
+<body>
+<h2>XMLHttpRequest module을 이용한 예제</h2>
+<br>
+<form name ='inputFrom'>
+	<textarea rows ="10" cols = "80" id = "debug"></textarea>
+	이름 :<input type = "text" name = "name"><br>
+	나이 :<input type = "text" name = "age"><br>
+	주소 :<input type = "text" name = "addr"><br>
+	<input type = "button" value = "서버에 자료요청" onclick = "sendOnClick()">
+</form>
+</body>
+</html>

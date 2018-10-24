@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+
+	var httpRequest = null;
+	
+	function getXMLHttpRequest(){
+		if(window.XMLHttpRequest){
+			return new XMLHttpRequest();
+		}
+		if(window.ActiveXObject){
+			return new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		return null;
+	}
+	
+	
+	
+	
+	function sendProcess(){
+		httpRequest = getXMLHttpRequest();
+		httpRequest.onreadystatechange = callbackFunction();
+		httpRequest.open("GET","hello.html",true);
+		httpRequest.send(null);
+	}
+	
+	function callbackFunction(){
+		/*
+			readyState
+			0: open() 호ㅜㄹ전
+			1: open() 호출, send() 호출전
+			2: send() 호출, 서버응답전
+			3: 서버응답(header 전송, body 미전송)
+			4: 서버응답완료(body 전송완료)
+		*/
+		var debug = document.getElementById("debug");
+		switch(httpRequest.readyState){
+		case 1:
+			debug.value +="Loading...\n";
+			break;
+		case 2:
+			debug.value +="Loaded...\n";
+			break;
+		case 3:
+			debug.value +="Interactive...\n";
+			break;
+		case 4:
+			debug.value +="Complete...\n";
+			break;
+		}
+	}
+</script>
+</head>
+<body>
+<textarea rows = "10" cols ="80" id = "debug"></textarea>
+<input type ="button" value="서버호출" onclick="sendProcess()">
+</body>
+</html>

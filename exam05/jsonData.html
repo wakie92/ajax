@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "httprequest.js"></script>
+<script>
+	function sendOnClick(){
+		sendProcess('GET','sample.html',null,callback);
+	}
+	
+	function callback(){
+		if(httpRequest.readyState  ==4 && httpRequest.status ==200){
+			var msg = '';
+			var data = httpRequest.responseText;//여기까진 스트링 타입
+			var memberList = eval(data);//자바객체 타입으로 변환
+			msg += '회원수 : ' + memberList.length + '명\n';
+			alert(memberList);
+			for(var i= 0; i<memberList.length; i++){
+				var member = memberList[i];
+				var id = member.id;
+				
+				var name = member.name;
+				msg+= id+'(' + name + ')\n';
+			}
+			var debug = document.getElementById("debug");
+			debug.value = msg;
+			
+		}
+	}
+	
+	
+</script>
+</head>
+<body>
+	<h2>JSON DATA 예제</h2>
+	<br>
+	<textarea rows ='10' cols ='80' id='debug'></textarea>
+	<input type="button" value = "서버에 자료요청" onclick = "sendOnClick()">
+</body>
+</html>
